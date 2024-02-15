@@ -25,8 +25,8 @@ CLEAN_FILE_NAME_REGEX_COMPILED = re.compile(CLEAN_FILE_NAME_REGEX)
 
 
 def transliterate_text(text):
-    text = translit(text, "ru", reversed=True).lower()
-    return text
+    """Транслитерует текст."""
+    return translit(text, "ru", reversed=True).lower()
 
 
 def delete_directory(directory):
@@ -40,6 +40,7 @@ def delete_directory(directory):
 
 
 def process_zip(TEMP_DIR, file_path):
+    """Обработчик одного архива."""
     if not TEMP_DIR.exists():
         TEMP_DIR.mkdir()
     with zipfile.ZipFile(file_path, "r") as zip_file:
@@ -48,6 +49,11 @@ def process_zip(TEMP_DIR, file_path):
 
 
 def process_html(file_path):
+    """
+    Функция, удаляющая ненужные теги и добавляющая нужные теги в html страничку.
+    Возвращает имя нового html файла.
+    """
+
     with open(file_path, "r", encoding="utf-8") as html_file:
         html_content = html_file.read()
 
@@ -73,6 +79,7 @@ def process_html(file_path):
 
 
 def main(ZIPFILE_DIR, TEMP_DIR, process_zip):
+    """ "Главная функция, обрабатывающая архивы."""
     for file_path in ZIPFILE_DIR.glob("*.zip"):
         source_htmls = process_zip(TEMP_DIR, file_path)
         if not source_htmls:
