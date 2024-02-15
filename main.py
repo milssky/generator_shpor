@@ -31,12 +31,7 @@ def transliterate_text(text):
 
 def delete_directory(directory):
     """Удаляет директорию со всеми вложенными директориями и файлами."""
-    for item in directory.iterdir():
-        if item.is_dir():
-            delete_directory(item)
-        else:
-            item.unlink()
-    directory.rmdir()
+    shutil.rmtree(directory)    
 
 
 def process_zip(TEMP_DIR, file_path):
