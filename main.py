@@ -72,6 +72,15 @@ def process_html(file_path):
     return new_file_name
 
 
+def clear_directory(directory):
+    """Создает гарантированно пустую директорию."""
+    if not directory.exists():
+        directory.mkdir()
+    else:
+        delete_directory(directory)
+        directory.mkdir()
+
+
 def main(ZIPFILE_DIR, TEMP_DIR, process_zip):
     """ "Главная функция, обрабатывающая архивы."""
     for file_path in ZIPFILE_DIR.glob("*.zip"):
@@ -88,17 +97,8 @@ if __name__ == "__main__":
     if not ZIPFILE_DIR.exists():
         raise DirectoryDoesNotExist(f"{ZIPFILE_DIR} does not exist")
 
-    if not TEMP_DIR.exists():
-        TEMP_DIR.mkdir()
-    else:
-        delete_directory(TEMP_DIR)
-        TEMP_DIR.mkdir()
-
-    if not RESULT_DIR.exists():
-        RESULT_DIR.mkdir()
-    else:
-        delete_directory(RESULT_DIR)
-        RESULT_DIR.mkdir()
+    for directory in (TEMP_DIR, RESULT_DIR):
+        clear_directory(directory)
 
     main(ZIPFILE_DIR, TEMP_DIR, process_zip)
     shutil.copytree("./prism", RESULT_DIR / "prism")
