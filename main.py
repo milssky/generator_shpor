@@ -30,7 +30,7 @@ def transliterate_text(text):
 
 def delete_directory(directory):
     """Удаляет директорию со всеми вложенными директориями и файлами."""
-    shutil.rmtree(directory)    
+    shutil.rmtree(directory)
 
 
 def process_zip(TEMP_DIR, file_path):
