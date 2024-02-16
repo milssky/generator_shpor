@@ -2,6 +2,8 @@ import logging
 import shutil
 import sys
 import zipfile
+from pathlib import Path
+from typing import Callable, Sequence
 
 from transliterate import translit
 
@@ -80,17 +82,35 @@ def clear_directory(directory):
         directory.mkdir()
 
 
-def main(ZIPFILE_DIR, TEMP_DIR, process_zip):
+def main(
+    zip_dir: Path,
+    temp_dir: Path,
+    result_dir: Path,
+    commot_static_dirs: tuple,
+    process_zip: Callable[[Path, Path], list[Path]],
+):
     """ "Главная функция, обрабатывающая архивы."""
-    for file_path in ZIPFILE_DIR.glob("*.zip"):
-        source_htmls = process_zip(TEMP_DIR, file_path)
+    if not zip_dir.exists():
+        logging.error(
+            f"Directory {zip_dir} does not exist! Create it and put into shpora zip-files!"
+        )
+        sys.exit(-1)
+
+    for directory in (temp_dir, result_dir):
+        clear_directory(directory)
+
+    for file_path in zip_dir.glob("*.zip"):
+        source_htmls = process_zip(temp_dir, file_path)
         if not source_htmls:
             raise HTMLFileNotFoundError("Zip file doesn't contain html files")
         file_name = process_html(source_htmls[0])
-        destination_folder = RESULT_DIR / file_name
-        shutil.copytree(TEMP_DIR, destination_folder)
-        delete_directory(TEMP_DIR)
+        destination_folder = result_dir / file_name
+        shutil.copytree(temp_dir, destination_folder)
+        delete_directory(temp_dir)
         logging.info(f"Created {destination_folder}")
+
+    for directory in commot_static_dirs:
+        shutil.copytree(directory, result_dir / directory)
 
 
 if __name__ == "__main__":
@@ -100,15 +120,4 @@ if __name__ == "__main__":
         handlers=[logging.StreamHandler(sys.stdout)],
     )
 
-    if not ZIPFILE_DIR.exists():
-        logging.error(
-            f"Directory {ZIPFILE_DIR} does not exist! Create it and put into shpora zip-files!"
-        )
-        sys.exit(-1)
-
-    for directory in (TEMP_DIR, RESULT_DIR):
-        clear_directory(directory)
-
-    main(ZIPFILE_DIR, TEMP_DIR, process_zip)
-    for directory in DIRS_FOR_COPY:
-        shutil.copytree(directory, RESULT_DIR / directory)
+    main(ZIPFILE_DIR, TEMP_DIR, RESULT_DIR, DIRS_FOR_COPY, process_zip)
