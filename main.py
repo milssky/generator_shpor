@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
     if not ZIPFILE_DIR.exists():
         logging.error(
-            f"Directory {ZIPFILE_DIR} does not exist! Create it and put into shopora zip-files!"
+            f"Directory {ZIPFILE_DIR} does not exist! Create it and put into shpora zip-files!"
         )
         sys.exit(-1)
 
