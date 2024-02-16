@@ -43,9 +43,7 @@ def process_zip(TEMP_DIR, file_path):
     except FileNotFoundError:
         raise FileNotFoundError("Файл не найден")
     except zipfile.BadZipfile:
-        raise ZipFileError(
-            f"Ошибка во время открытия zip файла - {file_path}"
-        )
+        raise ZipFileError(f"Ошибка во время открытия zip файла - {file_path}")
     return list(TEMP_DIR.glob("*.html"))
 
 

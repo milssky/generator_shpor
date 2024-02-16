@@ -6,6 +6,7 @@ from pathlib import Path
 from main import process_zip
 from exceptions import ZipFileError
 
+
 class TestProcessZip(unittest.TestCase):
     def setUp(self):
         self.temp_dir = Path("temp")
