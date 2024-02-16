@@ -18,13 +18,13 @@ from constants import (
     TEMP_DIR,
     ZIPFILE_DIR,
 )
-from exceptions import HTMLFileNotFoundError
+from exceptions import DirectoryDoesNotExistError, HTMLFileNotFoundError, ZipFileError
 
 
 def transliterate_text(text):
     """Транслитерует текст."""
     if not isinstance(text, str):
-        raise TypeError("text must be str")
+        raise TypeError("Параметр text должен иметь тип str")
     return translit(text, "ru", reversed=True).lower()
 
 
@@ -34,14 +34,18 @@ def delete_directory(directory):
 
 
 def process_zip(TEMP_DIR, file_path):
-    """Обработчик одного архива."""
+    """Обработчик одного архива. Извлекает файлы и папки из архива."""
     if not TEMP_DIR.exists():
         TEMP_DIR.mkdir()
     try:
         with zipfile.ZipFile(file_path, "r") as zip_file:
             zip_file.extractall(TEMP_DIR)
+    except FileNotFoundError:
+        raise FileNotFoundError("Файл не найден")
     except zipfile.BadZipfile:
-        logging.error(f"Error while extracting zip file - {file_path}")
+        raise ZipFileError(
+            f"Ошибка во время открытия zip файла - {file_path}"
+        )
     return list(TEMP_DIR.glob("*.html"))
 
 
@@ -62,16 +66,21 @@ def process_html(file_path):
         html_content[:head_idx] + HEAD_ADD_PRISM_HTML + html_content[head_idx:]
     )
 
-    html_file_name = "-".join(file_path.name.split(" ")[:-1])
-    new_file_name = transliterate_text(html_file_name)
-    new_file_name = CLEAN_FILE_NAME_REGEX_COMPILED.sub("", new_file_name)
-
+    new_file_name = generate_new_filename(file_path)
     file_path.unlink()
 
     with open(
         file_path.parent / (new_file_name + ".html"), "w", encoding="utf-8"
     ) as html_file:
         html_file.write(html_content)
+    return new_file_name
+
+
+def generate_new_filename(file_path):
+    """ "Генерирует новое имя файла из имени html файла шпоры."""
+    html_file_name = "-".join(file_path.name.split(" ")[:-1])
+    new_file_name = transliterate_text(html_file_name)
+    new_file_name = CLEAN_FILE_NAME_REGEX_COMPILED.sub("", new_file_name)
     return new_file_name
 
 
@@ -91,12 +100,11 @@ def main(
     commot_static_dirs: tuple,
     process_zip: Callable[[Path, Path], list[Path]],
 ):
-    """ "Главная функция, обрабатывающая архивы."""
+    """Главная функция, обрабатывающая архивы."""
     if not zip_dir.exists():
-        logging.error(
-            f"Directory {zip_dir} does not exist! Create it and put into shpora zip-files!"
+        raise ZipFileError(
+            f"Директория {zip_dir} недоступна! Создайте ее и положите внутрь zip-архивы шпор!"
         )
-        sys.exit(-1)
 
     for directory in (temp_dir, result_dir):
         clear_directory(directory)
@@ -104,7 +112,7 @@ def main(
     for file_path in zip_dir.glob("*.zip"):
         source_htmls = process_zip(temp_dir, file_path)
         if not source_htmls:
-            raise HTMLFileNotFoundError("Zip file doesn't contain html files")
+            raise HTMLFileNotFoundError("Внутри zip-архива нет html файлов!")
         file_name = process_html(source_htmls[0])
         destination_folder = result_dir / file_name
         shutil.copytree(temp_dir, destination_folder)
@@ -122,4 +130,7 @@ if __name__ == "__main__":
         handlers=[logging.StreamHandler(sys.stdout)],
     )
 
-    main(ZIPFILE_DIR, TEMP_DIR, RESULT_DIR, DIRS_FOR_COPY, process_zip)
+    try:
+        main(ZIPFILE_DIR, TEMP_DIR, RESULT_DIR, DIRS_FOR_COPY, process_zip)
+    except Exception as e:
+        logging.error(e)
