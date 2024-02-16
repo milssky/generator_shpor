@@ -23,6 +23,8 @@ from exceptions import HTMLFileNotFoundError
 
 def transliterate_text(text):
     """Транслитерует текст."""
+    if not isinstance(text, str):
+        raise TypeError("text must be str")
     return translit(text, "ru", reversed=True).lower()
 
 
