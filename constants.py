@@ -1,4 +1,5 @@
 import pathlib
+import re
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 ZIPFILE_DIR = BASE_DIR / "zip"
@@ -9,6 +10,12 @@ SCRIPT_LINK_REMOVE_REGEX = r"<script src=\"https:\/\/cdnjs\.cloudflare.com\/ajax
 PROPERTIES_TABLE_REGEX = r"<table class=\"properties\".+<\/table>"
 FILE_ICON_REGEX = r"<div class=\"page-header-icon.+<\/div>"
 CLEAN_FILE_NAME_REGEX = r"[^a-zA-Z0-9\ \-]"
+
+SCRIPT_LINK_REMOVE_REGEX_COMPILED = re.compile(SCRIPT_LINK_REMOVE_REGEX)
+PROPERTIES_TABLE_REGEX_COMPILED = re.compile(PROPERTIES_TABLE_REGEX)
+FILE_ICON_REGEX_COMPILED = re.compile(FILE_ICON_REGEX)
+CLEAN_FILE_NAME_REGEX_COMPILED = re.compile(CLEAN_FILE_NAME_REGEX)
+
 
 HEAD_ADD_PRISM_HTML = """
 <link href="../prism/prism.css" rel="stylesheet" />

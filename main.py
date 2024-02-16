@@ -1,5 +1,4 @@
 import logging
-import re
 import shutil
 import sys
 import zipfile
@@ -7,22 +6,17 @@ import zipfile
 from transliterate import translit
 
 from constants import (
-    CLEAN_FILE_NAME_REGEX,
+    CLEAN_FILE_NAME_REGEX_COMPILED,
     DIRS_FOR_COPY,
-    FILE_ICON_REGEX,
+    FILE_ICON_REGEX_COMPILED,
     HEAD_ADD_PRISM_HTML,
-    PROPERTIES_TABLE_REGEX,
+    PROPERTIES_TABLE_REGEX_COMPILED,
     RESULT_DIR,
-    SCRIPT_LINK_REMOVE_REGEX,
+    SCRIPT_LINK_REMOVE_REGEX_COMPILED,
     TEMP_DIR,
     ZIPFILE_DIR,
 )
 from exceptions import HTMLFileNotFoundError
-
-SCRIPT_LINK_REMOVE_COMPILED_REGEX = re.compile(SCRIPT_LINK_REMOVE_REGEX)
-PROPERTIES_TABLE_COMPILED_REGEX = re.compile(PROPERTIES_TABLE_REGEX)
-FILE_ICON_REGEX_COMPILED = re.compile(FILE_ICON_REGEX)
-CLEAN_FILE_NAME_REGEX_COMPILED = re.compile(CLEAN_FILE_NAME_REGEX)
 
 
 def transliterate_text(text):
@@ -56,8 +50,8 @@ def process_html(file_path):
     with open(file_path, "r", encoding="utf-8") as html_file:
         html_content = html_file.read()
 
-    html_content = SCRIPT_LINK_REMOVE_COMPILED_REGEX.sub("", html_content)
-    html_content = PROPERTIES_TABLE_COMPILED_REGEX.sub("", html_content)
+    html_content = SCRIPT_LINK_REMOVE_REGEX_COMPILED.sub("", html_content)
+    html_content = PROPERTIES_TABLE_REGEX_COMPILED.sub("", html_content)
     html_content = FILE_ICON_REGEX_COMPILED.sub("", html_content)
     head_idx = html_content.find("</head>")
     html_content = (
