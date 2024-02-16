@@ -100,7 +100,7 @@ def main(ZIPFILE_DIR, TEMP_DIR, process_zip):
 if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
-        format="%(levelname)s: %(funcName)s: %(lineno)s. %(message)s",
+        format="%(levelname)s: %(message)s",
         handlers=[logging.StreamHandler(sys.stdout)],
     )
 
