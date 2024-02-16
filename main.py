@@ -39,11 +39,11 @@ def process_zip(TEMP_DIR, file_path):
     """Обработчик одного архива."""
     if not TEMP_DIR.exists():
         TEMP_DIR.mkdir()
-    try:    
+    try:
         with zipfile.ZipFile(file_path, "r") as zip_file:
             zip_file.extractall(TEMP_DIR)
     except zipfile.BadZipfile:
-        logging.error(f'Error while extracting zip file - {file_path}')
+        logging.error(f"Error while extracting zip file - {file_path}")
     return list(TEMP_DIR.glob("*.html"))
 
 
