@@ -1,5 +1,7 @@
+import logging
 import re
 import shutil
+import sys
 import zipfile
 
 from transliterate import translit
@@ -13,6 +15,7 @@ from constants import (
     PROPERTIES_TABLE_REGEX,
     SCRIPT_LINK_REMOVE_REGEX,
     HEAD_ADD_PRISM_HTML,
+    DIRS_FOR_COPY,
 )
 from exceptions import DirectoryDoesNotExist, HTMLFileNotFoundError
 
@@ -91,15 +94,25 @@ def main(ZIPFILE_DIR, TEMP_DIR, process_zip):
         destination_folder = RESULT_DIR / file_name
         shutil.copytree(TEMP_DIR, destination_folder)
         delete_directory(TEMP_DIR)
+        logging.info(f'Created {destination_folder}')
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(levelname)s: %(funcName)s: %(lineno)s. %(message)s",
+        handlers=[logging.StreamHandler(sys.stdout)],
+    )
+
     if not ZIPFILE_DIR.exists():
-        raise DirectoryDoesNotExist(f"{ZIPFILE_DIR} does not exist")
+        logging.error(
+            f"Directory {ZIPFILE_DIR} does not exist! Create it and put into shopora zip-files!"
+        )
+        sys.exit(-1)
 
     for directory in (TEMP_DIR, RESULT_DIR):
         clear_directory(directory)
 
     main(ZIPFILE_DIR, TEMP_DIR, process_zip)
-    shutil.copytree("./prism", RESULT_DIR / "prism")
-    shutil.copytree("./static", RESULT_DIR / "static")
+    for directory in DIRS_FOR_COPY:
+        shutil.copytree(directory, RESULT_DIR / directory)
