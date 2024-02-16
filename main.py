@@ -7,18 +7,17 @@ import zipfile
 from transliterate import translit
 
 from constants import (
-    ZIPFILE_DIR,
-    RESULT_DIR,
-    TEMP_DIR,
     CLEAN_FILE_NAME_REGEX,
-    FILE_ICON_REGEX,
-    PROPERTIES_TABLE_REGEX,
-    SCRIPT_LINK_REMOVE_REGEX,
-    HEAD_ADD_PRISM_HTML,
     DIRS_FOR_COPY,
+    FILE_ICON_REGEX,
+    HEAD_ADD_PRISM_HTML,
+    PROPERTIES_TABLE_REGEX,
+    RESULT_DIR,
+    SCRIPT_LINK_REMOVE_REGEX,
+    TEMP_DIR,
+    ZIPFILE_DIR,
 )
-from exceptions import DirectoryDoesNotExist, HTMLFileNotFoundError
-
+from exceptions import HTMLFileNotFoundError
 
 SCRIPT_LINK_REMOVE_COMPILED_REGEX = re.compile(SCRIPT_LINK_REMOVE_REGEX)
 PROPERTIES_TABLE_COMPILED_REGEX = re.compile(PROPERTIES_TABLE_REGEX)
@@ -94,7 +93,7 @@ def main(ZIPFILE_DIR, TEMP_DIR, process_zip):
         destination_folder = RESULT_DIR / file_name
         shutil.copytree(TEMP_DIR, destination_folder)
         delete_directory(TEMP_DIR)
-        logging.info(f'Created {destination_folder}')
+        logging.info(f"Created {destination_folder}")
 
 
 if __name__ == "__main__":

@@ -18,6 +18,6 @@ HEAD_ADD_PRISM_HTML = """
 <script src="../static/custom.js"></script>
 """
 
-PRISM_DIR = 'prism'
-STATIC_DIR = 'static'
+PRISM_DIR = "prism"
+STATIC_DIR = "static"
 DIRS_FOR_COPY = (PRISM_DIR, STATIC_DIR)
