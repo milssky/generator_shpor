@@ -96,7 +96,7 @@ def main(
     temp_dir: Path,
     result_dir: Path,
     commot_static_dirs: tuple,
-    process_zip: Callable[[Path, Path], list[Path]],
+    process_zip: Callable[[Path, Path], Sequence[Path]],
 ):
     """Главная функция, обрабатывающая архивы."""
     if not zip_dir.exists():
