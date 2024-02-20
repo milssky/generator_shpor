@@ -75,7 +75,7 @@ def process_html(file_path):
 
 
 def generate_new_filename(file_path):
-    """ "Генерирует новое имя файла из имени html файла шпоры."""
+    """Генерирует новое имя файла из имени html файла шпоры."""
     html_file_name = "-".join(file_path.name.split(" ")[:-1])
     new_file_name = transliterate_text(html_file_name)
     new_file_name = CLEAN_FILE_NAME_REGEX_COMPILED.sub("", new_file_name)
