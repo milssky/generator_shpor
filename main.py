@@ -100,7 +100,7 @@ def main(
 ):
     """Главная функция, обрабатывающая архивы."""
     if not zip_dir.exists():
-        raise ZipFileError(
+        raise DirectoryDoesNotExistError(
             f"Директория {zip_dir} недоступна! Создайте ее и положите внутрь zip-архивы шпор!"
         )
 
