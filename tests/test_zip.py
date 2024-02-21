@@ -3,7 +3,7 @@ import zipfile
 from unittest.mock import patch
 from pathlib import Path
 
-from main import process_zip
+from convert import process_zip
 from exceptions import ZipFileError
 
 

@@ -8,7 +8,7 @@ from constants import (
     PROPERTIES_TABLE_REGEX,
     SCRIPT_LINK_REMOVE_REGEX,
 )
-from main import process_html
+from convert import process_html
 
 
 class TestProcessHtml(unittest.TestCase):

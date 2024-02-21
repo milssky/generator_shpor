@@ -1,6 +1,6 @@
 import unittest
 
-from main import transliterate_text
+from convert import transliterate_text
 
 
 class TestTransliterate(unittest.TestCase):

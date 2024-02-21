@@ -3,7 +3,7 @@ import shutil
 import unittest
 from pathlib import Path
 
-from main import clear_directory, delete_directory
+from convert import clear_directory, delete_directory
 
 
 class TestDirectoryOperations(unittest.TestCase):
