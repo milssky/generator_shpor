@@ -6,9 +6,9 @@ ZIPFILE_DIR = BASE_DIR / "zip"
 RESULT_DIR = BASE_DIR / "result"
 TEMP_DIR = BASE_DIR / "temp"
 
-SCRIPT_LINK_REMOVE_REGEX = r"<script src=\"https:\/\/cdnjs\.cloudflare.com\/ajax\/libs\/prism\/.*<\/script><link rel=\"stylesheet\" href=\"https:\/\/cdnjs\.cloudflare.com\/ajax\/libs\/prism\/.*\/>"
+SCRIPT_LINK_REMOVE_REGEX = r"<script src=\"https:\/\/cdnjs\.cloudflare.com\/ajax\/libs\/prism\/.+?<\/script><link rel=\"stylesheet\" href=\"https:\/\/cdnjs\.cloudflare.com\/ajax\/libs\/prism\/.*?\/>"
 PROPERTIES_TABLE_REGEX = r"<table class=\"properties\".+<\/table>"
-FILE_ICON_REGEX = r"<div class=\"page-header-icon.+<\/div>"
+FILE_ICON_REGEX = r"<div class=\"page-header-icon.+?<\/div>"
 CLEAN_FILE_NAME_REGEX = r"[^a-zA-Z0-9\ \-]"
 
 SCRIPT_LINK_REMOVE_REGEX_COMPILED = re.compile(SCRIPT_LINK_REMOVE_REGEX)
