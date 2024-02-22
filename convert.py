@@ -15,6 +15,7 @@ from constants import (
     FILE_ICON_REGEX_COMPILED,
     HEAD_ADD_PRISM_HTML,
     LAMP_ICON_REMOVE_REGEX_COMPILED,
+    NEW_BODY_STYLE,
     PROPERTIES_TABLE_REGEX_COMPILED,
     RESULT_DIR,
     SCRIPT_LINK_REMOVE_REGEX_COMPILED,
@@ -63,9 +64,7 @@ def process_html(file_path):
     html_content = PROPERTIES_TABLE_REGEX_COMPILED.sub("", html_content)
     html_content = FILE_ICON_REGEX_COMPILED.sub("", html_content)
     html_content = LAMP_ICON_REMOVE_REGEX_COMPILED.sub("", html_content)
-    html_content = CLEAR_BODY_STYLE_REGEX_COMPILED.sub("""body {
-	line-height: 1.5;
-}""", html_content)
+    html_content = CLEAR_BODY_STYLE_REGEX_COMPILED.sub(NEW_BODY_STYLE, html_content)
     head_idx = html_content.find("</head>")
     html_content = (
         html_content[:head_idx] + HEAD_ADD_PRISM_HTML + html_content[head_idx:]

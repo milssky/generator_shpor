@@ -16,6 +16,7 @@ CLEAR_BODY_STYLE_REGEX = r"""body {
 	white-space: pre-wrap;
 }"""
 
+
 SCRIPT_LINK_REMOVE_REGEX_COMPILED = re.compile(SCRIPT_LINK_REMOVE_REGEX)
 PROPERTIES_TABLE_REGEX_COMPILED = re.compile(PROPERTIES_TABLE_REGEX)
 FILE_ICON_REGEX_COMPILED = re.compile(FILE_ICON_REGEX)
@@ -38,6 +39,10 @@ HEAD_ADD_PRISM_HTML = """
 <link href="../static/custom.css" rel="stylesheet" />
 <script src="../static/custom.js"></script>
 """
+
+NEW_BODY_STYLE = """body {
+	line-height: 1.5;
+}"""
 
 BODY_ADD_HTML = """
 <div id="footer">
