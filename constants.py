@@ -24,7 +24,7 @@ CLEAN_FILE_NAME_REGEX_COMPILED = re.compile(CLEAN_FILE_NAME_REGEX)
 LAMP_ICON_REMOVE_REGEX_COMPILED = re.compile(LAMP_ICON_REMOVE_REGEX)
 CLEAR_BODY_STYLE_REGEX_COMPILED = re.compile(CLEAR_BODY_STYLE_REGEX)
 
-HEAD_ADD_PRISM_HTML = """
+HEAD_ADD_PRISM_ICONS_STYLES_HTML = """
 <link rel="apple-touch-icon" sizes="180x180" href="../static/ico/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../static/ico/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../static/ico/favicon-16x16.png">

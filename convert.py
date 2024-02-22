@@ -13,7 +13,7 @@ from constants import (
     CLEAR_BODY_STYLE_REGEX_COMPILED,
     DIRS_FOR_COPY,
     FILE_ICON_REGEX_COMPILED,
-    HEAD_ADD_PRISM_HTML,
+    HEAD_ADD_PRISM_ICONS_STYLES_HTML,
     LAMP_ICON_REMOVE_REGEX_COMPILED,
     NEW_BODY_STYLE,
     PROPERTIES_TABLE_REGEX_COMPILED,
@@ -65,14 +65,16 @@ def process_html(file_path):
     html_content = FILE_ICON_REGEX_COMPILED.sub("", html_content)
     html_content = LAMP_ICON_REMOVE_REGEX_COMPILED.sub("", html_content)
     html_content = CLEAR_BODY_STYLE_REGEX_COMPILED.sub(NEW_BODY_STYLE, html_content)
+
     head_idx = html_content.find("</head>")
     html_content = (
-        html_content[:head_idx] + HEAD_ADD_PRISM_HTML + html_content[head_idx:]
+        html_content[:head_idx] + HEAD_ADD_PRISM_ICONS_STYLES_HTML + html_content[head_idx:]
     )
     body_idx = html_content.find("</body>")
     html_content = (
         html_content[:body_idx] + BODY_ADD_HTML + html_content[body_idx:]
     )
+    
     new_file_name = generate_new_filename(file_path)
     file_path.unlink()
 
