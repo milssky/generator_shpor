@@ -74,7 +74,7 @@ def process_html(file_path):
     html_content = (
         html_content[:body_idx] + BODY_ADD_HTML + html_content[body_idx:]
     )
-    
+
     new_file_name = generate_new_filename(file_path)
     file_path.unlink()
 
