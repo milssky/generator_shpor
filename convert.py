@@ -9,9 +9,12 @@ from transliterate import translit
 
 from constants import (
     CLEAN_FILE_NAME_REGEX_COMPILED,
+    BODY_ADD_HTML,
+    CLEAR_BODY_STYLE_REGEX_COMPILED,
     DIRS_FOR_COPY,
     FILE_ICON_REGEX_COMPILED,
     HEAD_ADD_PRISM_HTML,
+    LAMP_ICON_REMOVE_REGEX_COMPILED,
     PROPERTIES_TABLE_REGEX_COMPILED,
     RESULT_DIR,
     SCRIPT_LINK_REMOVE_REGEX_COMPILED,
@@ -59,11 +62,18 @@ def process_html(file_path):
     html_content = SCRIPT_LINK_REMOVE_REGEX_COMPILED.sub("", html_content)
     html_content = PROPERTIES_TABLE_REGEX_COMPILED.sub("", html_content)
     html_content = FILE_ICON_REGEX_COMPILED.sub("", html_content)
+    html_content = LAMP_ICON_REMOVE_REGEX_COMPILED.sub("", html_content)
+    html_content = CLEAR_BODY_STYLE_REGEX_COMPILED.sub("""body {
+	line-height: 1.5;
+}""", html_content)
     head_idx = html_content.find("</head>")
     html_content = (
         html_content[:head_idx] + HEAD_ADD_PRISM_HTML + html_content[head_idx:]
     )
-
+    body_idx = html_content.find("</body>")
+    html_content = (
+        html_content[:body_idx] + BODY_ADD_HTML + html_content[body_idx:]
+    )
     new_file_name = generate_new_filename(file_path)
     file_path.unlink()
 

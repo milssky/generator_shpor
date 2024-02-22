@@ -1,1 +1,31 @@
-/* Привет, как дела? */
+/* Добавочки */
+.page-title {
+    margin-top: 15px;
+    margin-bottom: 0; 
+    font-weight: normal;
+}
+h2 {
+    font-size: 1.5rem;
+    margin-top: 0;}
+.callout {
+	background: url("img/trademark_200.png") no-repeat left 5px / 5% #FFE98E;
+	padding: 1rem 1rem 1rem 3rem;}
+
+#footer {
+    background: url("img/logo_practicum.png") no-repeat 100% 10px;
+    padding-right: 250px;
+    min-height: 40px;
+    white-space: initial;    
+}	
+#saying {
+    color: #fff;    
+}
+#saying .text{    
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+}
+#saying .src{
+    font-size: 0.98rem; 
+    font-style: italic; 
+    text-align: right;
+}
