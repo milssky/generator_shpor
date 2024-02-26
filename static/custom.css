@@ -1,22 +1,19 @@
 /* Добавочки */
-.page-title {
-    margin-top   : 15px;
-    margin-bottom: 0;
-    font-weight  : normal;
-}
-
 h2 {
     font-size : 1.5rem;
     margin-top: 0;
 }
+code {
+    font-size: 105%;
+}
 
 .callout {
-    background: url("img/bulb.svg") no-repeat 10px 15px / 4% #FFE98E;
-    padding   : 1rem 1rem 1rem 3.5rem;
+    background: url("img/bulb.svg") no-repeat 10px 15px / 3% #FFE98E;
+    padding   : 1rem 1rem 1rem 3.2rem;
 }
 
 #footer {
-    background   : url("img/logo_practicum.png") no-repeat 100% 10px;
+    background   : url("img/logo.svg") no-repeat 100% 10px / 23%;
     padding-right: 250px;
     min-height   : 40px;
     white-space  : initial;
