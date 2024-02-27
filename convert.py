@@ -90,7 +90,7 @@ def generate_new_filename(file_path):
     html_file_name = "-".join(file_path.name.split(" ")[:-1])
     new_file_name = transliterate_text(html_file_name)
     new_file_name = CLEAN_FILE_NAME_REGEX_COMPILED.sub("", new_file_name)
-    return new_file_name
+    return new_file_name.replace('-ja', '')
 
 
 def clear_directory(directory):
