@@ -38,6 +38,7 @@ HEAD_ADD_PRISM_ICONS_STYLES_HTML = """
 <script src="../prism/prism.js"></script>
 <link href="../static/custom.css" rel="stylesheet" />
 <script src="../static/custom.js"></script>
+<base target="_blank">
 """
 
 NEW_BODY_STYLE = """body {

@@ -5,6 +5,7 @@ import zipfile
 from pathlib import Path
 from typing import Callable, Sequence
 
+from bs4 import BeautifulSoup
 from transliterate import translit
 
 from constants import (
@@ -51,6 +52,15 @@ def process_zip(TEMP_DIR, file_path):
     return list(TEMP_DIR.glob("*.html"))
 
 
+def find_id(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    rows = soup.find_all('tr')
+    for row in rows:
+        if 'ID' in row.text:
+            return row.find('td').text
+    
+
+
 def process_html(file_path):
     """
     Функция, удаляющая ненужные теги и добавляющая нужные теги в html страничку.
@@ -61,6 +71,9 @@ def process_html(file_path):
         html_content = html_file.read()
 
     html_content = SCRIPT_LINK_REMOVE_REGEX_COMPILED.sub("", html_content)
+
+    cheatsheet_id = find_id(html_content)
+
     html_content = PROPERTIES_TABLE_REGEX_COMPILED.sub("", html_content)
     html_content = FILE_ICON_REGEX_COMPILED.sub("", html_content)
     html_content = LAMP_ICON_REMOVE_REGEX_COMPILED.sub("", html_content)
@@ -75,11 +88,11 @@ def process_html(file_path):
         html_content[:body_idx] + BODY_ADD_HTML + html_content[body_idx:]
     )
 
-    new_file_name = generate_new_filename(file_path)
+    new_file_name = cheatsheet_id + '-' + generate_new_filename(file_path) + ".html"
     file_path.unlink()
 
     with open(
-        file_path.parent / (new_file_name + ".html"), "w", encoding="utf-8"
+        file_path.parent / new_file_name, "w", encoding="utf-8"
     ) as html_file:
         html_file.write(html_content)
     return new_file_name
@@ -124,12 +137,16 @@ def main(
             raise HTMLFileNotFoundError("Внутри zip-архива нет html файлов!")
         file_name = process_html(source_htmls[0])
         destination_folder = result_dir / file_name
-        shutil.copytree(temp_dir, destination_folder)
+        try:
+            shutil.copytree(temp_dir, destination_folder)
+        except Exception:
+            pass
         delete_directory(temp_dir)
         logging.info(f"Created {destination_folder}")
 
     for directory in commot_static_dirs:
         shutil.copytree(directory, result_dir / directory)
+
 
 
 if __name__ == "__main__":
