@@ -136,7 +136,7 @@ def main(
         if not source_htmls:
             raise HTMLFileNotFoundError("Внутри zip-архива нет html файлов!")
         file_name = process_html(source_htmls[0])
-        destination_folder = result_dir / file_name
+        destination_folder = result_dir / (file_name.replace('.html', ''))
         try:
             shutil.copytree(temp_dir, destination_folder)
         except Exception:

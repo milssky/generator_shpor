@@ -26,6 +26,10 @@ class TestProcessHtml(unittest.TestCase):
                 <body>
                     <table class="properties">
                         <tr>
+                            <td>ID</td>
+                            <td>001</td>
+                        </tr>
+                        <tr>
                             <td>Property</td>
                             <td>Value</td>
                         </tr>
@@ -36,20 +40,20 @@ class TestProcessHtml(unittest.TestCase):
                 """
             )
 
-    # def test_process_html(self):
-    #     new_file_name = process_html(self.test_file_path)
+    def test_process_html(self):
+        new_file_name = process_html(self.test_file_path)
 
-    #     self.assertFalse(self.test_file_path.exists())
-    #     new_file_path = self.test_file_path.parent / (new_file_name + ".html")
-    #     self.assertTrue(new_file_path.exists())
+        self.assertFalse(self.test_file_path.exists())
+        new_file_path = self.test_file_path.parent / (new_file_name)
+        self.assertTrue(new_file_path.exists())
 
-    #     # Проверяем, что ненужные теги были удалены, а нужный тег добавлен
-    #     with open(new_file_path, "r", encoding="utf-8") as new_file:
-    #         new_html_content = new_file.read()
-    #         self.assertNotRegex(new_html_content, re.compile(SCRIPT_LINK_REMOVE_REGEX))
-    #         self.assertNotRegex(new_html_content, re.compile(PROPERTIES_TABLE_REGEX))
-    #         self.assertNotRegex(new_html_content, re.compile(FILE_ICON_REGEX))
-    #         self.assertRegex(
-    #             new_html_content, re.compile(re.compile(HEAD_ADD_PRISM_ICONS_STYLES_HTML))
-    #         )
-    #     Path.unlink(new_file_path)
+        # Проверяем, что ненужные теги были удалены, а нужный тег добавлен
+        with open(new_file_path, "r", encoding="utf-8") as new_file:
+            new_html_content = new_file.read()
+            self.assertNotRegex(new_html_content, re.compile(SCRIPT_LINK_REMOVE_REGEX))
+            self.assertNotRegex(new_html_content, re.compile(PROPERTIES_TABLE_REGEX))
+            self.assertNotRegex(new_html_content, re.compile(FILE_ICON_REGEX))
+            self.assertRegex(
+                new_html_content, re.compile(re.compile(HEAD_ADD_PRISM_ICONS_STYLES_HTML))
+            )
+        Path.unlink(new_file_path)
