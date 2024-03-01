@@ -58,7 +58,7 @@ def find_id(html_content):
     for row in rows:
         if 'ID' in row.text:
             return row.find('td').text
-    
+    raise ValueError('Не указан ID шпаргалки в таблице свойств Notion')
 
 
 def process_html(file_path):
