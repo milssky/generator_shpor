@@ -114,6 +114,9 @@ def clear_directory(directory):
         delete_directory(directory)
         directory.mkdir()
 
+def zip_folder(folder_path, output_path):
+    shutil.make_archive(output_path, 'zip', RESULT_DIR)
+
 
 def main(
     zip_dir: Path,
