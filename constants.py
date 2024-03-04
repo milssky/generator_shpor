@@ -1,5 +1,10 @@
+import os
 import pathlib
 import re
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 ZIPFILE_DIR = BASE_DIR / "zip"
@@ -60,7 +65,7 @@ DIRS_FOR_COPY = (PRISM_DIR, STATIC_DIR)
 
 
 # TODO: Измени на переменную окружения
-API_TOKEN = '7030047679:AAE5MRaCOE4RnizmAA4zuLvZSlYqW-skLPk'
+API_TOKEN = os.getenv('API_TOKEN')
 WELCOME_MESSAGE = (
     'Привет! \n\nЭто генератор шпор для ЯПа из Notion. \n\n'
     'Чтобы мной воспользоваться, убедись, что '
