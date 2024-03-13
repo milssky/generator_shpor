@@ -53,12 +53,15 @@ def process_zip(TEMP_DIR, file_path):
 
 
 def find_id(html_content):
+    """Ищет ID шпоры в html файле. В случае отсутствия возвращает 'unknown_id'."""
     soup = BeautifulSoup(html_content, 'html.parser')
     rows = soup.find_all('tr')
     for row in rows:
         if 'ID' in row.text:
             return row.find('td').text
-    raise ValueError('Не указан ID шпаргалки в таблице свойств Notion')
+    # raise ValueError('Не указан ID шпаргалки в таблице свойств Notion')
+    # TODO: Добавить логирование
+    return 'unknown_id'
 
 
 def process_html(file_path):
