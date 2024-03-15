@@ -12,11 +12,12 @@ app = fastapi.FastAPI()
 
 
 @app.post('/secret_webhook/')
-def process_webhook(update):
+def process_webhook(update: dict):
     if update:
         update = telebot.types.Update.de_json(update)
         bot.process_new_updates([update])
-
+    return
+    
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):

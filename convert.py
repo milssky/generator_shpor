@@ -58,10 +58,12 @@ def find_id(html_content):
     rows = soup.find_all('tr')
     for row in rows:
         if 'ID' in row.text:
+            if row.find('td').text == "":
+                raise ValueError('Поле ID не заполнено, но присутствует. Добавьте значение')
             return row.find('td').text
-    # raise ValueError('Не указан ID шпаргалки в таблице свойств Notion')
+    raise ValueError('Не указан ID шпаргалки в таблице свойств Notion')
     # TODO: Добавить логирование
-    return 'unknown_id'
+    # return 'unknown_id'
 
 
 def process_html(file_path):
