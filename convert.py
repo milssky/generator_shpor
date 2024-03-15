@@ -59,7 +59,7 @@ def find_id(html_content):
     for row in rows:
         if 'ID' in row.text:
             if row.find('td').text == "":
-                raise ValueError('Поле ID не заполнено, но присутствует. Добавьте значение')
+                raise ValueError('Поле ID не заполнено в таблице свойств шпаргалки, но присутствует. Добавьте значение')
             return row.find('td').text
     raise ValueError('Не указан ID шпаргалки в таблице свойств Notion')
     # TODO: Добавить логирование
