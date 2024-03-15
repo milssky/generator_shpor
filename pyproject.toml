@@ -11,6 +11,8 @@ pytelegrambotapi = "4.16.1"
 beautifulsoup4 = "4.12.3"
 python-dotenv = "1.0.1"
 transliterate = "^1.10.2"
+fastapi = "^0.110.0"
+uvicorn = "^0.28.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"

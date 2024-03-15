@@ -1,12 +1,21 @@
 from pathlib import Path
 
 import telebot
+import fastapi
 
 from constants import API_TOKEN, WELCOME_MESSAGE, ZIPFILE_DIR, TEMP_DIR, RESULT_DIR, DIRS_FOR_COPY, BASE_DIR, WRONG_FORMAT_MESSAGE, HANDLE_ZIP_MESSAGE
 from convert import main, process_zip, zip_folder
 
 
 bot = telebot.TeleBot(API_TOKEN)
+app = fastapi.FastAPI()
+
+
+@app.post('/secret_webhook/')
+def process_webhook(update):
+    if update:
+        update = telebot.types.Update.de_json(update)
+        bot.process_new_updates([update])
 
 
 @bot.message_handler(commands=['start'])
