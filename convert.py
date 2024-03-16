@@ -23,7 +23,12 @@ from constants import (
     TEMP_DIR,
     ZIPFILE_DIR,
 )
-from exceptions import DirectoryDoesNotExistError, EmptyIDError,HTMLFileNotFoundError, ZipFileError
+from exceptions import (
+    DirectoryDoesNotExistError,
+    EmptyIDError,
+    HTMLFileNotFoundError,
+    ZipFileError,
+)
 
 
 def transliterate_text(text):
@@ -54,14 +59,16 @@ def process_zip(TEMP_DIR, file_path):
 
 def find_id(html_content):
     """Ищет ID шпоры в html файле. В случае отсутствия возвращает 'unknown_id'."""
-    soup = BeautifulSoup(html_content, 'html.parser')
-    rows = soup.find_all('tr')
+    soup = BeautifulSoup(html_content, "html.parser")
+    rows = soup.find_all("tr")
     for row in rows:
-        if 'ID' in row.text:
-            if row.find('td').text == "":
-                raise EmptyIDError('Поле ID не заполнено в таблице свойств шпаргалки, но присутствует. Добавьте значение')
-            return row.find('td').text
-    raise ValueError('Не указан ID шпаргалки в таблице свойств Notion')
+        if "ID" in row.text:
+            if row.find("td").text == "":
+                raise EmptyIDError(
+                    "Поле ID не заполнено в таблице свойств шпаргалки, но присутствует. Добавьте значение"
+                )
+            return row.find("td").text
+    raise ValueError("Не указан ID шпаргалки в таблице свойств Notion")
     # TODO: Добавить логирование
     # return 'unknown_id'
 
@@ -86,19 +93,17 @@ def process_html(file_path):
 
     head_idx = html_content.find("</head>")
     html_content = (
-        html_content[:head_idx] + HEAD_ADD_PRISM_ICONS_STYLES_HTML + html_content[head_idx:]
+        html_content[:head_idx]
+        + HEAD_ADD_PRISM_ICONS_STYLES_HTML
+        + html_content[head_idx:]
     )
     body_idx = html_content.find("</body>")
-    html_content = (
-        html_content[:body_idx] + BODY_ADD_HTML + html_content[body_idx:]
-    )
+    html_content = html_content[:body_idx] + BODY_ADD_HTML + html_content[body_idx:]
 
-    new_file_name = cheatsheet_id + '-' + generate_new_filename(file_path) + ".html"
+    new_file_name = cheatsheet_id + "-" + generate_new_filename(file_path) + ".html"
     file_path.unlink()
 
-    with open(
-        file_path.parent / new_file_name, "w", encoding="utf-8"
-    ) as html_file:
+    with open(file_path.parent / new_file_name, "w", encoding="utf-8") as html_file:
         html_file.write(html_content)
     return new_file_name
 
@@ -108,7 +113,7 @@ def generate_new_filename(file_path):
     html_file_name = "-".join(file_path.name.split(" ")[:-1])
     new_file_name = transliterate_text(html_file_name)
     new_file_name = CLEAN_FILE_NAME_REGEX_COMPILED.sub("", new_file_name)
-    return new_file_name.replace('-ja', '')
+    return new_file_name.replace("-ja", "")
 
 
 def clear_directory(directory):
@@ -119,8 +124,9 @@ def clear_directory(directory):
         delete_directory(directory)
         directory.mkdir()
 
+
 def zip_folder(folder_path, output_path):
-    shutil.make_archive(output_path, 'zip', RESULT_DIR)
+    shutil.make_archive(output_path, "zip", RESULT_DIR)
 
 
 def main(
@@ -144,7 +150,7 @@ def main(
         if not source_htmls:
             raise HTMLFileNotFoundError("Внутри zip-архива нет html файлов!")
         file_name = process_html(source_htmls[0])
-        destination_folder = result_dir / (file_name.replace('.html', ''))
+        destination_folder = result_dir / (file_name.replace(".html", ""))
         try:
             shutil.copytree(temp_dir, destination_folder)
         except Exception:
@@ -154,7 +160,6 @@ def main(
 
     for directory in commot_static_dirs:
         shutil.copytree(directory, result_dir / directory)
-
 
 
 if __name__ == "__main__":

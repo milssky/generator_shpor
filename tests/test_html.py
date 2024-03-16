@@ -54,6 +54,7 @@ class TestProcessHtml(unittest.TestCase):
             self.assertNotRegex(new_html_content, re.compile(PROPERTIES_TABLE_REGEX))
             self.assertNotRegex(new_html_content, re.compile(FILE_ICON_REGEX))
             self.assertRegex(
-                new_html_content, re.compile(re.compile(HEAD_ADD_PRISM_ICONS_STYLES_HTML))
+                new_html_content,
+                re.compile(re.compile(HEAD_ADD_PRISM_ICONS_STYLES_HTML)),
             )
         Path.unlink(new_file_path)
