@@ -1,0 +1,12 @@
+[Unit]
+Description=uvicorn daemon 
+After=network.target 
+
+[Service]
+User=root 
+WorkingDirectory=/usr/share/shpora_bot/
+
+ExecStart=uvicorn bot:app
+
+[Install]
+WantedBy=multi-user.target

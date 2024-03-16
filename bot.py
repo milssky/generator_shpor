@@ -5,7 +5,7 @@ import fastapi
 
 from constants import API_TOKEN, WELCOME_MESSAGE, ZIPFILE_DIR, TEMP_DIR, RESULT_DIR, DIRS_FOR_COPY, BASE_DIR, WRONG_FORMAT_MESSAGE, HANDLE_ZIP_MESSAGE
 from convert import main, process_zip, zip_folder
-
+from exceptions import EmptyIDError
 
 bot = telebot.TeleBot(API_TOKEN)
 app = fastapi.FastAPI()
@@ -41,6 +41,8 @@ def handle_zip(message: telebot.types.Message):
         zip_folder(RESULT_DIR, 'result')
         with open('result.zip', 'rb') as zip_file:
             bot.send_document(message.chat.id, zip_file)
+    except EmptyIDError as e:
+        bot.send_photo(message.chat.id, open(BASE_DIR / 'id.jpg', 'rb'))
     except Exception as e:
         bot.reply_to(message, f"Произошла ошибка: {e}")
     finally:

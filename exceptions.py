@@ -8,3 +8,7 @@ class ZipFileError(Exception):
 
 class DirectoryDoesNotExistError(Exception):
     pass
+
+
+class EmptyIDError(Exception):
+    pass
