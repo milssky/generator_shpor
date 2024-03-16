@@ -57,7 +57,7 @@ def process_zip(TEMP_DIR, file_path):
     return list(TEMP_DIR.glob("*.html"))
 
 
-def find_id(html_content):
+def find_id(html_content, file_path = None):
     """Ищет ID шпоры в html файле. В случае отсутствия возвращает 'unknown_id'."""
     soup = BeautifulSoup(html_content, "html.parser")
     rows = soup.find_all("tr")
@@ -65,7 +65,7 @@ def find_id(html_content):
         if "ID" in row.text:
             if row.find("td").text == "":
                 raise EmptyIDError(
-                    "Поле ID не заполнено в таблице свойств шпаргалки, но присутствует. Добавьте значение"
+                    f"В исходной шпаргалке {file_path} не заполнено поле ID. Заполните его и загрузите архив заново."
                 )
             return row.find("td").text
     raise ValueError("Не указан ID шпаргалки в таблице свойств Notion")
@@ -84,7 +84,7 @@ def process_html(file_path):
 
     html_content = SCRIPT_LINK_REMOVE_REGEX_COMPILED.sub("", html_content)
 
-    cheatsheet_id = find_id(html_content)
+    cheatsheet_id = find_id(html_content, file_path.stem)
 
     html_content = PROPERTIES_TABLE_REGEX_COMPILED.sub("", html_content)
     html_content = FILE_ICON_REGEX_COMPILED.sub("", html_content)
