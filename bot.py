@@ -7,7 +7,7 @@ import fastapi
 
 from constants import API_TOKEN, WELCOME_MESSAGE, ZIPFILE_DIR, TEMP_DIR, RESULT_DIR, DIRS_FOR_COPY, BASE_DIR, WRONG_FORMAT_MESSAGE, HANDLE_ZIP_MESSAGE
 from convert import main, process_zip, zip_folder
-from exceptions import EmptyIDError
+from exceptions import EmptyIDError, HTMLFileNotFoundError, ZipFileError
 
 formatter = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
 logger = telebot.logger
@@ -53,6 +53,9 @@ def handle_zip(message: telebot.types.Message):
         logger.error(f'Пользователь {message.from_user.username}-{message.chat.id}. {e}')
         bot.reply_to(message, f"Произошла ошибка: {e}")
         bot.send_photo(message.chat.id, open(BASE_DIR / 'id.jpg', 'rb'))
+    except (HTMLFileNotFoundError, ZipFileError) as e:
+        logger.error(f'Пользователь {message.from_user.username}-{message.chat.id}. {e}')
+        bot.reply_to(message, f"Произошла ошибка: {e}")
     except Exception as e:
         logger.error(f'Пользователь {message.from_user.username}-{message.chat.id}. {e}')
         bot.reply_to(message, f"Произошла какая-то страшная ошибка. Отправил ее разработчику.")
