@@ -1,4 +1,6 @@
 from pathlib import Path
+import logging
+from logging.handlers import RotatingFileHandler
 
 import telebot
 import fastapi
@@ -6,6 +8,12 @@ import fastapi
 from constants import API_TOKEN, WELCOME_MESSAGE, ZIPFILE_DIR, TEMP_DIR, RESULT_DIR, DIRS_FOR_COPY, BASE_DIR, WRONG_FORMAT_MESSAGE, HANDLE_ZIP_MESSAGE
 from convert import main, process_zip, zip_folder
 from exceptions import EmptyIDError
+
+formatter = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
+logger = telebot.logger
+handler = RotatingFileHandler('bot.log', maxBytes=50000000, backupCount=5)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 bot = telebot.TeleBot(API_TOKEN)
 app = fastapi.FastAPI()
@@ -42,9 +50,12 @@ def handle_zip(message: telebot.types.Message):
         with open('result.zip', 'rb') as zip_file:
             bot.send_document(message.chat.id, zip_file)
     except EmptyIDError as e:
+        logger.error(f'Пользователь {message.from_user.username}-{message.chat.id}. {e}')
+        bot.reply_to(message, f"Произошла ошибка: {e}")
         bot.send_photo(message.chat.id, open(BASE_DIR / 'id.jpg', 'rb'))
     except Exception as e:
-        bot.reply_to(message, f"Произошла ошибка: {e}")
+        logger.error(f'Пользователь {message.from_user.username}-{message.chat.id}. {e}')
+        bot.reply_to(message, f"Произошла какая-то страшная ошибка. Отправил ее разработчику.")
     finally:
         Path(BASE_DIR /'result.zip').unlink()
         file.unlink()
